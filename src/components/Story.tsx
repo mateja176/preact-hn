@@ -9,7 +9,7 @@ const Story: React.FC<IStory> = story => {
     <>
       <a href={url} target="_blank" rel="noopener noreferrer">
         <h2>
-          {title} <small>({new URL(url).hostname})</small>
+          {title} {url && <small>({new URL(url).hostname})</small>}
         </h2>
       </a>
       <div>

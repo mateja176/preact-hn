@@ -6,7 +6,7 @@ export interface IStory {
   title: string;
   kids?: Ids;
   score: number;
-  url: string;
+  url?: string;
   by: string;
 }
 
