@@ -1,7 +1,7 @@
-const hackerNewsApi = 'https://hacker-news.firebaseio.com/v0';
+import { api } from '../models';
 
 export const fetchJSON = (...args: Parameters<typeof fetch>) => {
   const [url, ...options] = args;
 
-  return fetch(`${hackerNewsApi}${url}`, ...options).then(res => res.json());
+  return fetch(`${api}${url}`, ...options).then(res => res.json());
 };

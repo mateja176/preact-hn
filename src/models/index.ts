@@ -24,3 +24,5 @@ export type IComments = IComment[];
 export interface WithId {
   id: Id;
 }
+
+export const api = 'https://hacker-news.firebaseio.com/v0';
