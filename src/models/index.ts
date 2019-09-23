@@ -20,3 +20,7 @@ export interface IComment {
 }
 
 export type IComments = IComment[];
+
+export interface WithId {
+  id: Id;
+}
