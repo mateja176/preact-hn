@@ -1,15 +1,40 @@
 import React from 'react';
-import { IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
-import { Ids } from '../models';
+import {
+  AsyncProps,
+  IfFulfilled,
+  IfPending,
+  IfRejected,
+  useAsync,
+} from 'react-async';
+import { Id, Ids } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer from './containers/StoryContainer';
 
-const promiseFn = () =>
-  fetchJSON('/topstories.json?orderBy="$key"&limitToFirst=30');
+interface Pagination {
+  page: number;
+  pageSize: number;
+}
+
+interface IdsMap {
+  [ordinal: number]: Id;
+}
+
+const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) =>
+  fetchJSON(
+    `/topstories.json?orderBy="$key"&startAt="${page}"&endAt="${pageSize}"`,
+  );
 
 const TopStories: React.FC = () => {
-  const state = useAsync<Ids>({
-    promiseFn,
+  const pageSize = 25;
+  const [page, setPage] = React.useState(0);
+
+  const state = useAsync<IdsMap>({
+    // * the type of the promiseFn args
+    // * corresponds to the additional values passed to async options
+    // * and not to the type of the return data
+    promiseFn: promiseFn as any,
+    page,
+    pageSize,
   });
 
   return (
@@ -19,7 +44,11 @@ const TopStories: React.FC = () => {
         {() => <>Error while loading top stories, please retry.</>}
       </IfRejected>
       <IfFulfilled state={state}>
-        {ids => ids.map(id => <StoryContainer key={id} id={id} />)}
+        {data => {
+          const ids: Ids = Object.values(data);
+
+          return ids.map(id => <StoryContainer key={id} id={id} />);
+        }}
       </IfFulfilled>
     </>
   );
