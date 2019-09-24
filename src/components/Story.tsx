@@ -12,7 +12,7 @@ const Story: React.FC<IStory> = story => {
           {title} {url && <small>({new URL(url).hostname})</small>}
         </h2>
       </a>
-      <div>
+      <div style={{ color: 'dimgrey' }}>
         <strong>{score}</strong> points by <i>{by}</i>
         {!!kids.length && (
           <>
