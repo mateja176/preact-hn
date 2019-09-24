@@ -26,7 +26,7 @@ interface IdsMap {
 
 const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) => {
   const startAt = page * pageSize;
-  const endAt = startAt + pageSize;
+  const endAt = startAt + pageSize - 1;
 
   return fetchJSON(
     `/topstories.json?orderBy="$key"&startAt="${startAt}"&endAt="${endAt}"`,
@@ -86,7 +86,7 @@ const TopStories: React.FC = () => {
           onClick={() => {
             setPage(page + 1);
           }}
-          disabled={page > topStoriesTotal / 25 - 1 || state.isPending}
+          disabled={page > topStoriesTotal / pageSize - 1 || state.isPending}
         >
           Next
         </Button>
