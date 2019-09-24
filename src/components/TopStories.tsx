@@ -6,6 +6,7 @@ import {
   IfRejected,
   useAsync,
 } from 'react-async';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer, { minStoryHeight } from './containers/StoryContainer';
@@ -72,25 +73,24 @@ const TopStories: React.FC = () => {
           }}
         </IfFulfilled>
       </div>
-      <div style={{ marginTop: 30 }}>
-        <button
-          style={{ marginRight: 10 }}
+      <ButtonGroup style={{ marginTop: 30 }}>
+        <Button
           onClick={() => {
             setPage(page - 1);
           }}
           disabled={page < 1 || state.isPending}
         >
           Previous
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             setPage(page + 1);
           }}
           disabled={page > topStoriesTotal / 25 - 1 || state.isPending}
         >
           Next
-        </button>
-      </div>
+        </Button>
+      </ButtonGroup>
     </div>
   );
 };
