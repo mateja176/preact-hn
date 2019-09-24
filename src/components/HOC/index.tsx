@@ -22,7 +22,7 @@ export const withItemLoader = <Item extends WithId>({
 }: ItemLoaderConfig) => <Props extends Item>(
   Component: React.ComponentType<Props>,
 ) => {
-  const name = getDisplayName(Component) || 'Item';
+  const name = getDisplayName(Component);
 
   const WithItemLoader: React.FC<Omit<Props, keyof Item> & WithId> = ({
     id,
@@ -38,7 +38,7 @@ export const withItemLoader = <Item extends WithId>({
         <IfRejected state={state}>
           {() => (
             <MessageContainer height={height}>
-              Error while loading ${name}, please retry.
+              Error while loading {name}, please retry.
             </MessageContainer>
           )}
         </IfRejected>
@@ -49,7 +49,7 @@ export const withItemLoader = <Item extends WithId>({
     );
   };
 
-  WithItemLoader.displayName = wrapDisplayName(Component, `${name} loader`);
+  WithItemLoader.displayName = wrapDisplayName(Component, 'loader');
 
   return WithItemLoader;
 };
