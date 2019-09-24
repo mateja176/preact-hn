@@ -23,10 +23,14 @@ interface IdsMap {
   [ordinal: string]: Id;
 }
 
-const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) =>
-  fetchJSON(
-    `/topstories.json?orderBy="$key"&startAt="${page}"&endAt="${pageSize}"`,
+const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) => {
+  const startAt = page * pageSize;
+  const endAt = startAt + pageSize;
+
+  return fetchJSON(
+    `/topstories.json?orderBy="$key"&startAt="${startAt}"&endAt="${endAt}"`,
   );
+};
 
 const TopStories: React.FC = () => {
   const pageSize = 25;
