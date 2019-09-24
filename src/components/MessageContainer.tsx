@@ -1,8 +1,9 @@
 import React from 'react';
 
-const MessageContainer: React.FC<
-  Required<Pick<React.CSSProperties, 'height'>>
-> = ({ height, children }) => (
+const MessageContainer: React.FC<Pick<React.CSSProperties, 'height'>> = ({
+  height = 'initial',
+  children,
+}) => (
   <div style={{ height, display: 'flex', alignItems: 'center' }}>
     {children}
   </div>

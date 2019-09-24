@@ -38,10 +38,16 @@ const TopStories: React.FC = () => {
   });
 
   return (
-    <>
-      <IfPending state={state}>Loading top stories...</IfPending>
+    <div>
+      <IfPending state={state}>
+        <MessageContainer>Loading top stories...</MessageContainer>
+      </IfPending>
       <IfRejected state={state}>
-        {() => <>Error while loading top stories, please retry.</>}
+        {() => (
+          <MessageContainer>
+            Error while loading top stories, please retry.
+          </MessageContainer>
+        )}
       </IfRejected>
       <IfFulfilled state={state}>
         {data => {
