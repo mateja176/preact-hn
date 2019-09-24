@@ -1,3 +1,4 @@
+import qs from 'qs';
 import React from 'react';
 import {
   AsyncProps,
@@ -7,6 +8,7 @@ import {
   useAsync,
 } from 'react-async';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import { RouteComponentProps } from 'react-router';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer, { minStoryHeight } from './containers/StoryContainer';
@@ -33,13 +35,23 @@ const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) => {
   );
 };
 
-const TopStories: React.FC = () => {
+const TopStories: React.FC<RouteComponentProps> = ({
+  location: { search },
+  history,
+}) => {
   const pageSize = 25;
-  const [page, setPage] = React.useState(0);
-  const setPageAndScroll = (newPage: Parameters<typeof setPage>[0]) => {
+  const queryParams = qs.parse(search.slice(1));
+  const { page: initialPage = '0' } = queryParams;
+  const [page, setPage] = React.useState<Pagination['page']>(
+    parseInt(initialPage),
+  );
+  const setPageAndScroll = (newPage: Pagination['page']) => {
     setPage(newPage);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const newQueryParams = '?'.concat(qs.stringify({ page: newPage }));
+    history.push(newQueryParams);
   };
 
   const [trackReload, triggerReload] = React.useState<-1 | 1>(-1);
