@@ -28,7 +28,9 @@ export const withItemLoader = <Item extends WithId>({
     id,
     ...props
   }) => {
-    const state = useAsync<Item>({ promiseFn, id });
+    const [trackReload, triggerReload] = React.useState(false);
+
+    const state = useAsync<Item>({ promiseFn, id, watch: trackReload });
 
     return (
       <>
@@ -40,7 +42,15 @@ export const withItemLoader = <Item extends WithId>({
         <IfRejected state={state}>
           {() => (
             <MessageContainer height={height}>
-              Error while loading&nbsp;<i>{name}</i>, please retry.
+              Error while loading&nbsp;<i>{name}</i>,&nbsp;
+              <span
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => {
+                  triggerReload(!trackReload);
+                }}
+              >
+                please retry
+              </span>
             </MessageContainer>
           )}
         </IfRejected>

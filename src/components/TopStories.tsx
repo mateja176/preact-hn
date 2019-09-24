@@ -1,5 +1,11 @@
 import React from 'react';
-import { AsyncProps, IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
+import {
+  AsyncProps,
+  IfFulfilled,
+  IfPending,
+  IfRejected,
+  useAsync,
+} from 'react-async';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
@@ -31,6 +37,8 @@ const TopStories: React.FC = () => {
   const pageSize = 25;
   const [page, setPage] = React.useState(0);
 
+  const [trackReload, triggerReload] = React.useState<-1 | 1>(-1);
+
   const state = useAsync<IdsMap>({
     // * the type of the promiseFn args
     // * corresponds to the additional values passed to async options
@@ -38,7 +46,7 @@ const TopStories: React.FC = () => {
     promiseFn: promiseFn as any,
     page,
     pageSize,
-    watch: page,
+    watch: page + Number(trackReload),
   });
 
   return (
@@ -50,7 +58,15 @@ const TopStories: React.FC = () => {
         <IfRejected state={state}>
           {() => (
             <MessageContainer>
-              Error while loading top stories, please retry.
+              Error while loading top stories,&nbsp;
+              <span
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => {
+                  triggerReload(trackReload > 0 ? -1 : 1);
+                }}
+              >
+                please retry
+              </span>
             </MessageContainer>
           )}
         </IfRejected>
