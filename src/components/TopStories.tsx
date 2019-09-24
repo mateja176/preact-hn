@@ -36,6 +36,11 @@ const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) => {
 const TopStories: React.FC = () => {
   const pageSize = 25;
   const [page, setPage] = React.useState(0);
+  const setPageAndScroll = (newPage: Parameters<typeof setPage>[0]) => {
+    setPage(newPage);
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const [trackReload, triggerReload] = React.useState<-1 | 1>(-1);
 
@@ -86,7 +91,7 @@ const TopStories: React.FC = () => {
       <ButtonGroup style={{ marginTop: 30 }}>
         <Button
           onClick={() => {
-            setPage(page - 1);
+            setPageAndScroll(page - 1);
           }}
           disabled={page < 1 || state.isPending}
         >
@@ -94,7 +99,7 @@ const TopStories: React.FC = () => {
         </Button>
         <Button
           onClick={() => {
-            setPage(page + 1);
+            setPageAndScroll(page + 1);
           }}
           disabled={page > topStoriesTotal / pageSize - 1 || state.isPending}
         >
