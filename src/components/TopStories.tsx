@@ -9,6 +9,10 @@ import {
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer from './containers/StoryContainer';
+import MessageContainer from './MessageContainer';
+
+// * current number of total story ids returned without filtering
+const topStoriesTotal = 500;
 
 interface Pagination {
   page: number;
@@ -61,7 +65,26 @@ const TopStories: React.FC = () => {
           ));
         }}
       </IfFulfilled>
-    </>
+      <div style={{ marginTop: 30 }}>
+        <button
+          style={{ marginRight: 10 }}
+          onClick={() => {
+            setPage(page - 1);
+          }}
+          disabled={page < 1 || state.isPending}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => {
+            setPage(page + 1);
+          }}
+          disabled={page > topStoriesTotal / 25 - 1 || state.isPending}
+        >
+          Next
+        </button>
+      </div>
+    </div>
   );
 };
 
