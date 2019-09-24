@@ -13,9 +13,7 @@ const StoryComments: React.FC<RouteComponentProps> = ({
 }) => (
   <div>
     <Story {...story} />
-    <br />
-    <br />
-    <br />
+    <hr />
     <Comments commentsIds={commentsIds as Ids} />
   </div>
 );
