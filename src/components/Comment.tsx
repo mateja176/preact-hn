@@ -15,7 +15,7 @@ const Comment: React.FC<Omit<IComment, 'id'>> = ({ by, text, kids = [] }) => {
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
         <OverlayTrigger
           overlay={
-            <Tooltip id="collapse">{collapsed ? 'Collapse' : 'Expand'}</Tooltip>
+            <Tooltip id="collapse">{collapsed ? 'Expand' : 'Collapse'}</Tooltip>
           }
         >
           <i
