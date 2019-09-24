@@ -1,4 +1,5 @@
 import React from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { IComment } from '../models';
 import Comments from './Comments';
 
@@ -11,16 +12,23 @@ const Comment: React.FC<Omit<IComment, 'id'>> = ({ by, text, kids = [] }) => {
 
   return (
     <div>
-      <div>
-        <i
-          onClick={toggleCollapsed}
-          onKeyPress={toggleCollapsed}
-          tabIndex={0}
-          role="button"
-          style={{ cursor: 'pointer' }}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
+        <OverlayTrigger
+          overlay={
+            <Tooltip id="collapse">{collapsed ? 'Collapse' : 'Expand'}</Tooltip>
+          }
         >
-          {collapsed ? '▼' : '▲'}
-        </i>
+          <i
+            className="material-icons"
+            onClick={toggleCollapsed}
+            onKeyPress={toggleCollapsed}
+            tabIndex={0}
+            role="button"
+            style={{ cursor: 'pointer', marginRight: 10 }}
+          >
+            {collapsed ? 'expand_more' : 'expand_less'}
+          </i>
+        </OverlayTrigger>
         <i>{by}</i>
       </div>
       <div
