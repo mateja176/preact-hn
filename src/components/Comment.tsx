@@ -51,4 +51,6 @@ const Comment: React.FC<Omit<IComment, 'id'>> = ({ by, text, kids = [] }) => {
   );
 };
 
+Comment.displayName = 'comment';
+
 export default Comment;

@@ -33,12 +33,14 @@ export const withItemLoader = <Item extends WithId>({
     return (
       <>
         <IfPending state={state}>
-          <MessageContainer height={height}>Loading {name}...</MessageContainer>
+          <MessageContainer height={height}>
+            Loading <i>{name}</i>...
+          </MessageContainer>
         </IfPending>
         <IfRejected state={state}>
           {() => (
             <MessageContainer height={height}>
-              Error while loading {name}, please retry.
+              Error while loading <i>{name}</i>, please retry.
             </MessageContainer>
           )}
         </IfRejected>

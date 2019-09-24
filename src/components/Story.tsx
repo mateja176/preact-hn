@@ -36,4 +36,6 @@ const Story: React.FC<IStory> = story => {
   );
 };
 
+Story.displayName = 'story';
+
 export default Story;
