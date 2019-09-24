@@ -6,7 +6,7 @@ import {
   IfRejected,
   useAsync,
 } from 'react-async';
-import { Id, Ids } from '../models';
+import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer from './containers/StoryContainer';
 
@@ -16,7 +16,7 @@ interface Pagination {
 }
 
 interface IdsMap {
-  [ordinal: number]: Id;
+  [ordinal: string]: Id;
 }
 
 const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) =>
@@ -45,9 +45,14 @@ const TopStories: React.FC = () => {
       </IfRejected>
       <IfFulfilled state={state}>
         {data => {
-          const ids: Ids = Object.values(data);
+          const entries = Object.entries(data);
 
-          return ids.map(id => <StoryContainer key={id} id={id} />);
+          return entries.map(([ordinal, id]) => (
+            <div key={id} style={{ display: 'flex', marginBottom: 20 }}>
+              <h2 style={{ marginRight: 10 }}>{parseInt(ordinal) + 1}.</h2>
+              <StoryContainer id={id} />
+            </div>
+          ));
         }}
       </IfFulfilled>
     </>

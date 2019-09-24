@@ -6,7 +6,7 @@ const Story: React.FC<IStory> = story => {
   const { id, title, url, by, score, kids = [] } = story;
 
   return (
-    <>
+    <div>
       <a href={url} target="_blank" rel="noopener noreferrer">
         <h2>
           {title} {url && <small>({new URL(url).hostname})</small>}
@@ -32,7 +32,7 @@ const Story: React.FC<IStory> = story => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

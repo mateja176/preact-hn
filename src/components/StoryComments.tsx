@@ -11,13 +11,13 @@ const StoryComments: React.FC<RouteComponentProps> = ({
     },
   },
 }) => (
-  <>
+  <div>
     <Story {...story} />
     <br />
     <br />
     <br />
     <Comments commentsIds={commentsIds as Ids} />
-  </>
+  </div>
 );
 
 export default StoryComments;

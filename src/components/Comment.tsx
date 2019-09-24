@@ -10,7 +10,7 @@ const Comment: React.FC<Omit<IComment, 'id'>> = ({ by, text, kids = [] }) => {
   };
 
   return (
-    <>
+    <div>
       <div>
         <i
           onClick={toggleCollapsed}
@@ -39,7 +39,7 @@ const Comment: React.FC<Omit<IComment, 'id'>> = ({ by, text, kids = [] }) => {
           <Comments commentsIds={kids} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
