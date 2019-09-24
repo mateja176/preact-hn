@@ -8,15 +8,14 @@ const Story: React.FC<IStory> = story => {
   return (
     <div>
       <a href={url} target="_blank" rel="noopener noreferrer">
-        <h2>
+        <h4>
           {title} {url && <small>({new URL(url).hostname})</small>}
-        </h2>
+        </h4>
       </a>
       <div style={{ color: 'dimgrey' }}>
         <strong>{score}</strong> points by <i>{by}</i>
         {!!kids.length && (
-          <>
-            {' '}
+          <span style={{ marginLeft: 5 }}>
             |{' '}
             <Link
               to={{
@@ -29,7 +28,7 @@ const Story: React.FC<IStory> = story => {
             >
               {kids.length} comments
             </Link>
-          </>
+          </span>
         )}
       </div>
     </div>

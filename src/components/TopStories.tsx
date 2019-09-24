@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  AsyncProps,
-  IfFulfilled,
-  IfPending,
-  IfRejected,
-  useAsync,
-} from 'react-async';
+import { AsyncProps, IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
@@ -66,7 +60,7 @@ const TopStories: React.FC = () => {
 
             return entries.map(([ordinal, id]) => (
               <div key={id} style={{ display: 'flex', marginBottom: 20 }}>
-                <h2 style={{ marginRight: 10 }}>{parseInt(ordinal) + 1}.</h2>
+                <h4 style={{ marginRight: 10 }}>{parseInt(ordinal) + 1}.</h4>
                 <StoryContainer id={id} />
               </div>
             ));
