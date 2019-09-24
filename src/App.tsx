@@ -6,7 +6,7 @@ import Routes from './Routes';
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <Jumbotron style={{ minHeight: '100vh', marginBottom: 0 }}>
+    <Jumbotron style={{ minHeight: '100vh', marginBottom: 0, paddingTop: 32 }}>
       <Link to="/">
         <h1>Hacker news</h1>
       </Link>
