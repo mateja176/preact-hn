@@ -1,14 +1,6 @@
-import qs from 'qs';
 import React from 'react';
-import {
-  AsyncProps,
-  IfFulfilled,
-  IfPending,
-  IfRejected,
-  useAsync,
-} from 'react-async';
+import { IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { RouteComponentProps } from 'react-router';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer, { minStoryHeight } from './containers/StoryContainer';
@@ -26,45 +18,24 @@ interface IdsMap {
   [ordinal: string]: Id;
 }
 
-const promiseFn = ({ page, pageSize }: AsyncProps<Pagination>) => {
-  const startAt = page * pageSize;
-  const endAt = startAt + pageSize - 1;
+const promiseFn = () => fetchJSON('/topstories.json');
 
-  return fetchJSON(
-    `/topstories.json?orderBy="$key"&startAt="${startAt}"&endAt="${endAt}"`,
-  );
-};
-
-const TopStories: React.FC<RouteComponentProps> = ({
-  location: { search },
-  history,
-}) => {
+const TopStories: React.FC = () => {
   const pageSize = 25;
-  const queryParams = qs.parse(search.slice(1));
-  const { page: initialPage = '0' } = queryParams;
-  const [page, setPage] = React.useState<Pagination['page']>(
-    parseInt(initialPage),
-  );
-  const setPageAndScroll = (newPage: Pagination['page']) => {
-    setPage(newPage);
+  const [page, setPage] = React.useState<Pagination['page']>(0);
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    const newQueryParams = '?'.concat(qs.stringify({ page: newPage }));
-    history.push(newQueryParams);
-  };
-
-  const [trackReload, triggerReload] = React.useState<-1 | 1>(-1);
+  const [trackReload, triggerReload] = React.useState(false);
 
   const state = useAsync<IdsMap>({
     // * the type of the promiseFn args
     // * corresponds to the additional values passed to async options
     // * and not to the type of the return data
     promiseFn: promiseFn as any,
-    page,
-    pageSize,
-    watch: page + Number(trackReload),
+    watch: trackReload,
   });
+
+  const startAt = page * pageSize;
+  const endAt = startAt + pageSize;
 
   return (
     <div>
@@ -79,7 +50,7 @@ const TopStories: React.FC<RouteComponentProps> = ({
               <span
                 style={{ textDecoration: 'underline', cursor: 'pointer' }}
                 onClick={() => {
-                  triggerReload(trackReload > 0 ? -1 : 1);
+                  triggerReload(!trackReload);
                 }}
               >
                 please retry
@@ -91,7 +62,7 @@ const TopStories: React.FC<RouteComponentProps> = ({
           {data => {
             const entries = Object.entries(data);
 
-            return entries.map(([ordinal, id]) => (
+            return entries.slice(0, endAt).map(([ordinal, id]) => (
               <div key={id} style={{ display: 'flex', marginBottom: 20 }}>
                 <h4 style={{ marginRight: 10 }}>{parseInt(ordinal) + 1}.</h4>
                 <StoryContainer id={id} />
@@ -103,19 +74,11 @@ const TopStories: React.FC<RouteComponentProps> = ({
       <ButtonGroup style={{ marginTop: 30 }}>
         <Button
           onClick={() => {
-            setPageAndScroll(page - 1);
-          }}
-          disabled={page < 1 || state.isPending}
-        >
-          Previous
-        </Button>
-        <Button
-          onClick={() => {
-            setPageAndScroll(page + 1);
+            setPage(page + 1);
           }}
           disabled={page > topStoriesTotal / pageSize - 1 || state.isPending}
         >
-          Next
+          Load more
         </Button>
       </ButtonGroup>
     </div>
