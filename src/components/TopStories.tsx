@@ -39,12 +39,19 @@ const TopStories: React.FC = () => {
   const hasNextPage = page > topStoriesTotal / pageSize - 1 || state.isPending;
 
   React.useEffect(() => {
-    window.onscroll = () => {
+    const incrementPageOnScroll = () => {
       const { bottom } = boundary.current!.getBoundingClientRect();
       const { innerHeight } = window;
+
       if (hasNextPage && bottom <= innerHeight) {
         incrementPage();
       }
+    };
+
+    window.addEventListener('scroll', incrementPageOnScroll);
+
+    return () => {
+      window.removeEventListener('scroll', incrementPageOnScroll);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
