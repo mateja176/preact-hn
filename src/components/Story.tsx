@@ -22,7 +22,6 @@ const Story: React.FC<IStory> = story => {
                 pathname: `/${id}/comments`,
                 state: {
                   story,
-                  commentsIds: kids,
                 },
               }}
             >
