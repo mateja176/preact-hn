@@ -1,6 +1,5 @@
 import React from 'react';
 import { IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer, { minStoryHeight } from './containers/StoryContainer';
@@ -30,6 +29,24 @@ const TopStories: React.FC = () => {
     promiseFn,
     watch: trackReload,
   });
+
+  const boundary = React.useRef<HTMLDivElement>(null);
+
+  const incrementPage = () => {
+    setPage(oldPage => oldPage + 1);
+  };
+
+  const hasNextPage = page > topStoriesTotal / pageSize - 1 || state.isPending;
+
+  React.useEffect(() => {
+    window.onscroll = () => {
+      const { bottom } = boundary.current!.getBoundingClientRect();
+      const { innerHeight } = window;
+      if (hasNextPage && bottom <= innerHeight) {
+        incrementPage();
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const startAt = page * pageSize;
   const endAt = startAt + pageSize;
@@ -68,16 +85,7 @@ const TopStories: React.FC = () => {
           }}
         </IfFulfilled>
       </div>
-      <ButtonGroup style={{ marginTop: 30 }}>
-        <Button
-          onClick={() => {
-            setPage(page + 1);
-          }}
-          disabled={page > topStoriesTotal / pageSize - 1 || state.isPending}
-        >
-          Load more
-        </Button>
-      </ButtonGroup>
+      <div ref={boundary} style={{ height: 1 }} />
     </div>
   );
 };
