@@ -1,5 +1,6 @@
 import React from 'react';
 import { IfFulfilled, IfPending, IfRejected, useAsync } from 'react-async';
+import { AtomSpinner } from 'react-epic-spinners';
 import { Id } from '../models';
 import { fetchJSON } from '../utils';
 import StoryContainer, { minStoryHeight } from './containers/StoryContainer';
@@ -62,7 +63,16 @@ const TopStories: React.FC = () => {
     <div>
       <div style={{ minHeight: minStoryHeight * pageSize }}>
         <IfPending state={state}>
-          <MessageContainer>Loading top stories...</MessageContainer>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <AtomSpinner color="inherit" size={300} />
+            <h4 style={{ marginTop: 40 }}>Loading top stories...</h4>
+          </div>
         </IfPending>
         <IfRejected state={state}>
           {() => (
