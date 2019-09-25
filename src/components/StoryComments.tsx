@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Ids } from '../models';
 import Comments from './Comments';
 import Story from './Story';
 
@@ -10,12 +9,17 @@ const StoryComments: React.FC<RouteComponentProps> = ({
       state: { story, commentsIds },
     },
   },
-}) => (
-  <div>
-    <Story {...story} />
-    <hr />
-    <Comments commentsIds={commentsIds as Ids} />
-  </div>
-);
+}) => {
+  React.useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
+  return (
+    <div>
+      <Story {...story} />
+      <hr />
+      <Comments commentsIds={commentsIds} />
+    </div>
+  );
+};
 export default StoryComments;
