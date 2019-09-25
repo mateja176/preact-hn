@@ -27,10 +27,7 @@ const TopStories: React.FC = () => {
   const [trackReload, triggerReload] = React.useState(false);
 
   const state = useAsync<IdsMap>({
-    // * the type of the promiseFn args
-    // * corresponds to the additional values passed to async options
-    // * and not to the type of the return data
-    promiseFn: promiseFn as any,
+    promiseFn,
     watch: trackReload,
   });
 
