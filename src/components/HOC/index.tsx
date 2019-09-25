@@ -9,6 +9,7 @@ import {
 import { getDisplayName, wrapDisplayName } from 'recompose';
 import { WithId } from '../../models';
 import { fetchJSON } from '../../utils';
+import Err from '../Err';
 import MessageContainer from '../MessageContainer';
 
 const promiseFn = <Item extends WithId>({ id }: AsyncProps<Item>) =>
@@ -28,9 +29,7 @@ export const withItemLoader = <Item extends WithId>({
     id,
     ...props
   }) => {
-    const [trackReload, triggerReload] = React.useState(false);
-
-    const state = useAsync<Item>({ promiseFn, id, watch: trackReload });
+    const state = useAsync<Item>({ promiseFn, id });
 
     return (
       <>
@@ -42,15 +41,13 @@ export const withItemLoader = <Item extends WithId>({
         <IfRejected state={state}>
           {() => (
             <MessageContainer height={height}>
-              Error while loading&nbsp;<i>{name}</i>,&nbsp;
-              <span
-                style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                onClick={() => {
-                  triggerReload(!trackReload);
+              <Err
+                message="Error while loading"
+                action={() => {
+                  state.reload();
                 }}
-              >
-                please retry
-              </span>
+                actionText="please retry"
+              />
             </MessageContainer>
           )}
         </IfRejected>
