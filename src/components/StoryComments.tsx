@@ -1,6 +1,5 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Ids } from '../models';
 import Comments from './Comments';
 import Story from './Story';
 
@@ -14,7 +13,7 @@ const StoryComments: React.FC<RouteComponentProps> = ({
   <div>
     <Story {...story} />
     <hr />
-    <Comments commentsIds={commentsIds as Ids} />
+    <Comments commentsIds={commentsIds} />
   </div>
 );
 
